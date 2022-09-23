@@ -50,10 +50,3 @@ while True:
         else: # Not for me, pass to target
             print(f"Received data to relay - {len(data)} bytes for {DEVICES[message.target]}")
             sendMessage(message, DEVICES[message.target])
-
-
-
-
-
-
-
