@@ -1,0 +1,126 @@
+{"all":[
+    {
+        "id": 1,
+        "name": "manufacturer_name",
+        "description":"Manufacturer Name",
+        "type":"string",
+        "regex":".{,64}",
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 2,
+        "description":"Standard Compliance Major",
+        "name": "standard_compliance_major",
+        "type":"uint8",
+        "minimum":1,
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 101,
+        "description":"Standard Compliance Minor",
+        "name": "standard_compliance_minor",
+        "type":"uint8",
+        "minimum":0,
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 3,
+        "description":"Wet interface type",
+        "name":"wet_interface_type",
+        "type":"uint8",
+        "valid integers":[0,1,2,3],
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 54,
+        "description":"Background light level",
+        "name":"background_light_level",
+        "type":"uint8",
+        "maximum":100,
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 55,
+        "description":"Background noise",
+        "name":"background_noise",
+        "type":"uint8",
+        "maximum":100,
+        "access":{
+            "dry":{
+                "read":true
+            },
+            "wet":{
+                "read":true
+            }
+        }
+    },
+    {
+        "id": 56,
+        "description":"Transmitted byte count",
+        "name":"transmitted_byte_count",
+        "type":"uint32",
+        "access":{
+            "dry":{
+                "read":true,
+                "write": true,
+                "write_auth":true
+            },
+            "wet":{
+                "read":true,
+                "write": true,
+                "write_auth": true
+            }
+        }
+    },
+    {
+        "id": 58,
+        "description":"Save configuration",
+        "name":"save_configuration",
+        "type":"boolean",
+        "access":{
+            "dry":{
+                "write": true,
+                "write_auth":true
+            },
+            "wet":{
+                "write": true,
+                "write_auth": true
+            }
+        }
+    }
+]}

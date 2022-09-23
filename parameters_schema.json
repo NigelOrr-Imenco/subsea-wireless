@@ -1,0 +1,143 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "title": "Parameter List",
+    "description": "SWiG parameters",
+    "type": "array",
+    "items": {
+        "title": "parameter",
+        "description": "A SWiG parameter",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "unique identifier",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255
+            },
+            "name": {
+                "description": "A machine-useable description of the parameter with no whitespace",
+                "type": "string",
+                "maximumLength": 256
+            }
+            "description": {
+                "description": "A human-readable description of the parameter",
+                "type": "string",
+                "maximumLength": 256
+            },
+            "type": {
+                "description": "Data type of the parameter",
+                "type": "string",
+                "enum":[
+                    "uint8",
+                    "uint32",
+                    "string",
+                    "boolean"
+                ]
+            },
+            "minimum": {
+                "description": "Minimum integer value",
+                "type": "integer"
+            },
+            "maximum": {
+                "description": "Maximum integer value",
+                "type": "integer"
+            },
+            "pattern": {
+                "description": "Regular expression pattern which parameter values must match",
+                "type": "string"
+            },
+            "access": {
+                "description": "Permitted access to the parameter",
+                "type": "object",
+                "properties": {
+                    "dry": {
+                        "type": "object",
+                        "properties": {
+                            "read": {
+                                "type": "boolean"
+                            },
+                            "read_auth": {
+                                "type": "boolean"
+                            },
+                            "write": {
+                                "type": "boolean"
+                            },
+                            "write_auth": {
+                                "type": "boolean"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "dependentRequired": {
+                            "read_auth":["read"],
+                            "write_auth":["write"]
+                        }
+                    },
+                    "wet": {
+                        "type": "object",
+                        "properties": {
+                            "read": {
+                                "type": "boolean"
+                            },
+                            "read_auth": {
+                                "type": "boolean"
+                            },
+                            "write": {
+                                "type": "boolean"
+                            },
+                            "write_auth": {
+                                "type": "boolean"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "dependentRequired": {
+                            "read_auth":["read"],
+                            "write_auth":["write"]
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "valid integers": {
+                "description": "Valid integers",
+                "type": "array",
+                "items": {
+                    "type": "integer"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "valid strings": {
+                "description": "Valid strings",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "optional": {
+                "description": "Technology optional",
+                "type": "object",
+                "properties": {
+                    "acoustic": {
+                        "type": "boolean"
+                    },
+                    "optical": {
+                        "type": "boolean"
+                    },
+                    "inductive": {
+                        "type": "boolean"
+                    },
+                    "radio": {
+                        "type": "boolean"
+                    }
+                },
+                "additionalProperties": false,
+                "minItems": 1,
+                "uniqueItems": true
+            }
+        },
+        "required": [ "id", "name", "description", "type" ]
+    },
+    "additionalItems":false
+}
