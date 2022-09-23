@@ -39,15 +39,15 @@ Command line to create `python\parameters_pb2.py`:
 `..\protoc-21.6\bin\protoc.exe --python_out=python .\parameters.proto`
 
 ## Resources
-Use [The JSON Faker](https://json-schema-faker.js.org/) to generate fake JSON for the given schema to check schema constraints- paste the proposed schema in to the left window, and each time you press 'Generate' on the top right a fake file will be produced in the right window which complies with the schema
-Use [The JSON Validator](https://www.jsonschemavalidator.net/) to validate the standard specification data against the given schema. Note that only the outer array of the specification file is required, remove the preceding `{"all":` and trailing `}` text (some validators need them, some don't accept them... there's probably a reason for that which can be fixed, somehow)
-Tutorialspoint provide a [useful protobuf tutorial](https://www.tutorialspoint.com/protobuf/index.htm)
+- Use [The JSON Faker](https://json-schema-faker.js.org/) to generate fake JSON for the given schema to check schema constraints- paste the proposed schema in to the left window, and each time you press 'Generate' on the top right a fake file will be produced in the right window which complies with the schema
+- Use [The JSON Validator](https://www.jsonschemavalidator.net/) to validate the standard specification data against the given schema. Note that only the outer array of the specification file is required, remove the preceding `{"all":` and trailing `}` text (some validators need them, some don't accept them... there's probably a reason for that which can be fixed, somehow)
+- Tutorialspoint provide a [useful protobuf tutorial](https://www.tutorialspoint.com/protobuf/index.htm)
 
 ## Misc Notes
-Index by parameter ID, easy to make it unique
-default for all access is 'no', only list free/authenticated. If manufacturer optional, add separate field for this?
-auth authenticated how, and per connection assumed (i.e. make and authenticate connection, not per message?)
-if auth is specified in standard, is it a)allowed or b)required? maybe better to leave out auth for now
-Minimum for Standard compliance major and minor should always be set as the current version of the standard as of this document
-Wet type 0=acoustic, 1=optical, 2=inductive, 3=radio, minimum and maximum set accordingly. Does it need to be a list of types supported in this standard instead?
-Background light level and noise are set as read-only (writable with auth on spreadsheet V3_20Jul22 presumed typo)
+- Index by parameter ID, easy to make it unique
+- default for all access is 'no', only list free/authenticated. If manufacturer optional, add separate field for this?
+- auth authenticated how, and per connection assumed (i.e. make and authenticate connection, not per message?)
+- if auth is specified in standard, is it a)allowed or b)required? maybe better to leave out auth for now
+- Minimum for Standard compliance major and minor should always be set as the current version of the standard as of this document
+- Wet type 0=acoustic, 1=optical, 2=inductive, 3=radio, minimum and maximum set accordingly. Does it need to be a list of types supported in this standard instead?
+- Background light level and noise are set as read-only (writable with auth on spreadsheet V3_20Jul22 presumed typo)
