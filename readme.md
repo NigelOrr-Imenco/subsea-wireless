@@ -29,14 +29,19 @@ Then use Python to run vessel.py . In the demo, it will interrogate each modem (
 `pip show protobuf` confirms version of python protobuf installed 
 
 On initial test, output of pip show protobuf was
-` Name: protobuf `
-` Version: 4.21.6`
+```
+Name: protobuf
+Version: 4.21.6
+```
 
-Install a matching version of protoc (e.g. from [protobuf release page](https://github.com/protocolbuffers/protobuf/releases).
-[V21.6-win64](https://github.com/protocolbuffers/protobuf/releases/download/v21.6/protoc-21.6-win64.zip) was used for initial test
+Install a matching version of protoc (e.g. from [protobuf release page](https://github.com/protocolbuffers/protobuf/releases) ).
 
-Command line to create `python\parameters_pb2.py`:
-`..\protoc-21.6\bin\protoc.exe --python_out=python .\parameters.proto`
+For example, to match the python version installed above, [V21.6-win64](https://github.com/protocolbuffers/protobuf/releases/download/v21.6/protoc-21.6-win64.zip) was used.
+
+Command line to create `python\parameters_pb2.py` (assuming protoc is extracted to a folder called `protoc-21.6` 'beside' the one containing this README file) :
+```
+..\protoc-21.6\bin\protoc.exe --python_out=python .\parameters.proto
+```
 
 ## Resources
 - Use [The JSON Faker](https://json-schema-faker.js.org/) to generate fake JSON for the given schema to check schema constraints- paste the proposed schema in to the left window, and each time you press 'Generate' on the top right a fake file will be produced in the right window which complies with the schema
