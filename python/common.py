@@ -1,9 +1,9 @@
 # Common functionality
-
+from cobs import cobs
+import json # To handle parameter file directly
 import socket
 import time
 import parameters_pb2 as params
-import json # To handle parameter file directly
 
 UDP_IP = "127.0.0.1"
 UDP_VESSEL_PORT = 55501
@@ -41,7 +41,7 @@ def report(proto, description=""):
 
 def sendMessage(proto, portname, port_handle=None):
     """ Send the message to a specified interface"""
-    buffer = proto.SerializeToString()
+    buffer = cobs.encode(proto.SerializeToString())
     time.sleep(WIRELESS_LATENCY)
     if INTERFACES[portname][0] == "udp":
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP

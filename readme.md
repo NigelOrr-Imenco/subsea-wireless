@@ -32,6 +32,7 @@ Example implementation of serial and UDP alternatives are commented out in the s
 
 ## Protobuf
 `pip install protobuf` installs protobuf support for python
+`pip install cobs` installs COBS support, to guarantee buffers only have nulls as terminating bytes for transmission
 `pip show protobuf` confirms version of python protobuf installed 
 
 On initial test, output of pip show protobuf was

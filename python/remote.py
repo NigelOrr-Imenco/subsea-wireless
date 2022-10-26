@@ -27,7 +27,7 @@ while True:
     if data:
         # print(f"Received: {data}" % data)
         message = params.Message()
-        message.ParseFromString(data)
+        message.ParseFromString(cobs.decode(data))
         # print(str(message))
         if message.target == my_id:
             print(f"Message for me: device {message.target} ({PORTS[message.target]})")

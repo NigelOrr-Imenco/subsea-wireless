@@ -42,7 +42,7 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
         if data:    # Naively assume "any data is all data" for demo (e.g. not reassembling from fragments etc)
             # print(f"Received: {data}" % data)
             message = params.Message()
-            message.ParseFromString(data)
+            message.ParseFromString(cobs.decode(data))
             waiting = False # Successfully parsed
             if message.target == my_id:
                 print(f"Message for me received from {message.source} ({PORTS[message.source]}) - {len(data)} bytes")
