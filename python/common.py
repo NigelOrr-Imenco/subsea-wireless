@@ -7,10 +7,19 @@ import json # To handle parameter file directly
 
 UDP_IP = "127.0.0.1"
 UDP_VESSEL_PORT = 55501
-UDP_ROV_PORT = 55502
+UDP_ROV_DRY_PORT = 55502
+UDP_ROV_WET_PORT = 55522
 UDP_REMOTE_PORT = 55503
-UDP_PORTS = {"vessel":UDP_VESSEL_PORT, "rov":UDP_ROV_PORT, "remote":UDP_REMOTE_PORT}
-DEVICES = ["ZERO", "vessel", "rov", "remote"]
+# UDP_PORTS = {"vessel":UDP_VESSEL_PORT, "rov":UDP_ROV_PORT, "remote":UDP_REMOTE_PORT}
+INTERFACES = {
+    # "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
+    "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
+    # "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
+    "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
+    "rov_wet":["udp", UDP_IP, UDP_ROV_WET_PORT],
+    "remote":["udp", UDP_IP, UDP_REMOTE_PORT],
+    }
+PORTS = ["ZERO", "vessel", "rov_dry", "rov_wet", "remote"]
 WIRELESS_LATENCY = 0.1  # Simulated latency in seconds
 
 with open('parameters.json') as json_file:  # Provide wireless_parameter_specification dictionary for devices
@@ -31,9 +40,21 @@ def report(proto, description=""):
 
 
 def sendMessage(proto, portname):
-    """ Send the message using UDP to a specified port"""
+    """ Send the message to a specified interface"""
     buffer = proto.SerializeToString()
     time.sleep(WIRELESS_LATENCY)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
-    sock.sendto(buffer, (UDP_IP, UDP_PORTS[portname]))
-    print(f"Sent message to {portname} ({UDP_PORTS[portname]}) - {len(buffer)} bytes")
+    if INTERFACES[portname][0] == "udp":
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
+        sock.sendto(buffer, (INTERFACES[portname][1], INTERFACES[portname][2]))
+        print(f"Sent UDP message to {portname} ({INTERFACES[portname][1]}:{INTERFACES[portname][2]}) - {len(buffer)} bytes")
+    else:
+        print(f"Interface definition not supported for {portname} - {INTERFACES[portname]}")
+
+
+def getUdpInput(portname):
+    print(f'Getting UDP for {portname}')
+    sock = socket.socket(socket.AF_INET, # Internet
+            socket.SOCK_DGRAM) # UDP
+    sock.bind((INTERFACES[portname][1], INTERFACES[portname][2]))
+    sock.setblocking(0)
+    return sock

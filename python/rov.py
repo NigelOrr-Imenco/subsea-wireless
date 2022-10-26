@@ -3,27 +3,51 @@
 # Act on it or pass it on
 from common import *
 my_id = 2
+dry_interface_name = "rov_dry"
+wet_interface_name = "rov_wet"
+
+if INTERFACES[dry_interface_name][0] == "udp":
+    dry_udp_in = getUdpInput("rov_dry")
+elif INTERFACES[dry_interface_name][0] == "serial":
+    print("serial to be added")
+else:
+    print(f"Interface definition not supported for {dry_interface_name} - {INTERFACES[dry_interface_name]}")
+
+if INTERFACES[wet_interface_name][0] == "udp":
+    wet_udp_in = getUdpInput("rov_wet")
+elif INTERFACES[wet_interface_name][0] == "serial":
+    print("serial to be added")
+else:
+    print(f"Interface definition not supported for {wet_interface_name} - {INTERFACES[wet_interface_name]}")
 
 # Status of the various SWiG parameters with some initial demo values
 my_status = {1:"Truly Fast Subsea Wireless Pty.", 2:1, 101:2, 55:63}
 
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-sock.bind((UDP_IP, UDP_PORTS[DEVICES[my_id]]))
-sock.setblocking(0)
-
 while True:
-    try:
-        data = None
-        data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-    except socket.error:    # Presume timeout
-        pass        
+    data = None
+    if not data:    # Service dry interface (note this line is superfluous but keeps processing of wet and dry the same)
+        if INTERFACES[dry_interface_name][0] == "udp":
+            try:
+                data, addr = dry_udp_in.recvfrom(1024) # buffer size is 1024 bytes
+            except socket.error:    # Presume timeout
+                pass        
+        elif INTERFACES[dry_interface_name][0] == "serial":
+            print("Serial not supported yet")
+    if not data:
+        if INTERFACES[wet_interface_name][0] == "udp":
+            try:
+                data, addr = wet_udp_in.recvfrom(1024) # buffer size is 1024 bytes
+            except socket.error:    # Presume timeout
+                pass        
+        elif INTERFACES[wet_interface_name][0] == "serial":
+            print("Serial not supported yet")
+
     if data:
         # print(f"Received: {data}" % data)
         message = params.Message()
         message.ParseFromString(data)
         if message.target == my_id:
-            print(f"Message for me: device {message.target} ({DEVICES[message.target]})")
+            print(f"Message for me: device {message.target} ({PORTS[message.target]})")
             # Prepare response
             response = params.Message()
             response.source = my_id
@@ -48,5 +72,5 @@ while True:
             # print(str(response))
             sendMessage(response, "vessel")
         else: # Not for me, pass to target
-            print(f"Received data to relay - {len(data)} bytes for {DEVICES[message.target]}")
-            sendMessage(message, DEVICES[message.target])
+            print(f"Message to relay to device {message.target} ({PORTS[message.target]})")
+            sendMessage(message, PORTS[message.target])
