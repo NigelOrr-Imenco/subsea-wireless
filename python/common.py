@@ -13,9 +13,9 @@ UDP_REMOTE_PORT = 55503
 # UDP_PORTS = {"vessel":UDP_VESSEL_PORT, "rov":UDP_ROV_PORT, "remote":UDP_REMOTE_PORT}
 INTERFACES = {
     # "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
-    "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
+    "vessel":["serial", "COM8", 19200],
     # "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
-    "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
+    "rov_dry":["serial", "COM9", 19200],
     "rov_wet":["udp", UDP_IP, UDP_ROV_WET_PORT],
     "remote":["udp", UDP_IP, UDP_REMOTE_PORT],
     }
@@ -39,7 +39,7 @@ def report(proto, description=""):
     print(f"{description} {str(tx_bytes)} ({len(tx_bytes)} bytes)")
 
 
-def sendMessage(proto, portname):
+def sendMessage(proto, portname, port_handle=None):
     """ Send the message to a specified interface"""
     buffer = proto.SerializeToString()
     time.sleep(WIRELESS_LATENCY)
@@ -47,6 +47,9 @@ def sendMessage(proto, portname):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
         sock.sendto(buffer, (INTERFACES[portname][1], INTERFACES[portname][2]))
         print(f"Sent UDP message to {portname} ({INTERFACES[portname][1]}:{INTERFACES[portname][2]}) - {len(buffer)} bytes")
+    elif INTERFACES[portname][0] == "serial":
+        port_handle.write(buffer)
+        print(f"Sent serial message to {portname} ({INTERFACES[portname][1]}) - {len(buffer)} bytes")
     else:
         print(f"Interface definition not supported for {portname} - {INTERFACES[portname]}")
 

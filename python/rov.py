@@ -9,14 +9,16 @@ wet_interface_name = "rov_wet"
 if INTERFACES[dry_interface_name][0] == "udp":
     dry_udp_in = getUdpInput("rov_dry")
 elif INTERFACES[dry_interface_name][0] == "serial":
-    print("serial to be added")
+    import serial
+    dry_serial = serial.Serial(INTERFACES[dry_interface_name][1], INTERFACES[dry_interface_name][2], timeout=0.1)
 else:
     print(f"Interface definition not supported for {dry_interface_name} - {INTERFACES[dry_interface_name]}")
 
 if INTERFACES[wet_interface_name][0] == "udp":
     wet_udp_in = getUdpInput("rov_wet")
 elif INTERFACES[wet_interface_name][0] == "serial":
-    print("serial to be added")
+    import serial
+    wet_serial = serial.Serial(INTERFACES[wet_interface_name][1], INTERFACES[wet_interface_name][2], timeout=0.1)
 else:
     print(f"Interface definition not supported for {wet_interface_name} - {INTERFACES[wet_interface_name]}")
 
@@ -32,7 +34,7 @@ while True:
             except socket.error:    # Presume timeout
                 pass        
         elif INTERFACES[dry_interface_name][0] == "serial":
-            print("Serial not supported yet")
+            data = dry_serial.read(1000)
     if not data:
         if INTERFACES[wet_interface_name][0] == "udp":
             try:
@@ -40,7 +42,7 @@ while True:
             except socket.error:    # Presume timeout
                 pass        
         elif INTERFACES[wet_interface_name][0] == "serial":
-            print("Serial not supported yet")
+            data = wet_serial.read(1000)
 
     if data:
         # print(f"Received: {data}" % data)
@@ -70,7 +72,20 @@ while True:
                     print(f'unsupported data type for ID{parameter.id} - {spec["type"]}')
                     pass # Ignore it, nothing more can be done
             # print(str(response))
-            sendMessage(response, "vessel")
+            # Vessel can only communicate through ROV modem's dry interface
+            if INTERFACES[dry_interface_name][0] == "serial":
+                sendMessage(response, "vessel", dry_serial)
+            else:
+                sendMessage(response, "vessel")   
         else: # Not for me, pass to target
             print(f"Message to relay to device {message.target} ({PORTS[message.target]})")
-            sendMessage(message, PORTS[message.target])
+            if INTERFACES[PORTS[message.target]][0] == "serial":
+                if message.target == 1: # Dry side
+                    # print("Serial dry")
+                    sendMessage(message, PORTS[message.target], dry_serial)
+                else:
+                    # print("Serial wet")
+                    sendMessage(message, PORTS[message.target], wet_serial)
+            else:
+                # print("UDP")
+                sendMessage(message, PORTS[message.target])

@@ -6,7 +6,8 @@ my_name = PORTS[my_id]
 if INTERFACES[my_name][0] == "udp":
     udp_in = getUdpInput(PORTS[my_id])
 elif INTERFACES[my_name][0] == "serial":
-    print("serial to be added")
+    import serial
+    dry_serial = serial.Serial(INTERFACES[PORTS[my_id]][1], INTERFACES[PORTS[my_id]][2], timeout=0.1)
 else:
     print(f"Interface definition not supported for {my_name} - {INTERFACES[my_name]}")
 
@@ -21,7 +22,11 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
     request_stats.requests[:] = [1, 2, 101, 55]
     # report(request_stats)
 
-    sendMessage(request_stats, "rov_dry")   # Vessel can only communicate through ROV modem's dry interface
+# Vessel can only communicate through ROV modem's dry interface
+    if INTERFACES[my_name][0] == "serial":
+        sendMessage(request_stats, "rov_dry", dry_serial)
+    else:
+        sendMessage(request_stats, "rov_dry")   
     waiting = True
 
     while waiting:
@@ -32,7 +37,8 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
             except socket.error:    # Presume timeout
                 pass        
         elif INTERFACES[my_name][0] == "serial":
-            print("Serial not supported yet")
+            data = dry_serial.read(1000)
+
         if data:    # Naively assume "any data is all data" for demo (e.g. not reassembling from fragments etc)
             # print(f"Received: {data}" % data)
             message = params.Message()
@@ -58,7 +64,7 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
             else: # Not for me, and I am an endpoint, so ignore it
                 pass
 
-#print(device_status)
+# print(device_status)  # unformatted for debug
 print("|       *Manufacturer Name*       | *Ver.* | *Noise* |")
 for device in [2, 4]:
     status = device_status[device]

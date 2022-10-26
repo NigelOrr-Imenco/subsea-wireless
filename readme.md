@@ -11,7 +11,7 @@ The demonstration code simulates a simple configuration of a vessel(`vessel.py`)
 
 To simplify the code, common functionality shared between all simulated nodes has been extracted to `common.py`, which is imported to each of the node's Python files.
 
-Communication between the nodes is via UDP ports, with vessel, ROV and device each listening on one port on localhost, defined in `common.py`. Vessel only communicates with ROV, and remote only communicates with ROV, no messages are sent directly between the vessel and the remote unit.
+Communication on each simulated link is simulated by a UDP port or serial connection. For UDP, each simulated device port (vessel, ROV (wet and dry sides) and remote device wet side) each listen on one UDP port on the IP address defined in `common.py`. Vessel only communicates with ROV dry side, and remote only communicates with ROV wet side, no messages are sent directly between the vessel and the remote unit.
 
 The protobuf definition includes source and target identifiers, then any or all of the following
 * A list of parameter id's which are requested from the target
@@ -23,6 +23,12 @@ The demo scripts read the json file directly to get detail which can be used to 
 ### Usage
 Use Python to run the rov.py and remote.py scripts, starting the simulated subsea devices.
 Then use Python to run vessel.py . In the demo, it will interrogate each modem (the ROV one and the remote one) for some parameters and print the results on the console.
+
+## Serial support
+To use serial ports for communications, install python serial
+`pip install pyserial` installs python serial port support
+And change the definitions for each end of the required connection (ports, speeds) in `common.py`
+Example implementation of serial and UDP alternatives are commented out in the supplied `common.py`
 
 ## Protobuf
 `pip install protobuf` installs protobuf support for python
