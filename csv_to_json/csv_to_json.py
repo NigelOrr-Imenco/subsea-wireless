@@ -87,17 +87,21 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
         
       param['optional'] = optional
 
-    if '1-bit' in csv_param['Representation'] or 'Bool' in csv_param['Representation']:
+    if 'tructure' in csv_param['Representation']: # [Ss]tructured data
+      param['representation'] = "json"
+    elif '1-bit' in csv_param['Representation'] or 'Bool' in csv_param['Representation']:
       param['representation'] = "boolean"
+    elif 'string' in csv_param['Representation']:
+      param['representation'] = "string"
     elif '64' in csv_param['Representation']:
       param['representation'] = "uint64"
     elif '32' in csv_param['Representation']:
       param['representation'] = "uint32"
     elif '16' in csv_param['Representation']:
       param['representation'] = "uint16"
-    elif '8' in csv_param['Representation'] or '100' in csv_param['Representation']:
+    elif '8' in csv_param['Representation'] or '100' in csv_param['Representation'] or 'byte' in csv_param['Representation']:
       param['representation'] = "uint8"
-    else: # Default to structured data represented in string
+    else: # Default to structured data
       param['representation'] = "json"
 
     json_params.append(param)
