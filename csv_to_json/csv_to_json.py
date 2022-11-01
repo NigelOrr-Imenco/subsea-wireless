@@ -23,7 +23,8 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
     else:
       param['id'] = csv_param['Id']
       last_id = param['id'] # Used in debug message above to locate missing IDs
-    param_name = csv_param['Description'].replace(' ','_').lower()
+    # For name, replace ' ' or '-' with '_', convert to lowercase and remove other non-alphanumeric characters
+    param_name = csv_param['Description'].lower().replace(' ','_').replace('-','_').replace('(','').replace(')','').replace('?','')
     # print(f"{csv_param['Description']} - {param_name}")
     param['name'] = param_name
     param['description'] = csv_param['Description']
@@ -86,21 +87,25 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
         
       param['optional'] = optional
 
-      if '1-bit' in csv_param['Representation'] or 'Bool' in csv_param['Representation']:
-        param['representation'] = "boolean"
-      elif '64' in csv_param['Representation']:
-        param['representation'] = "uint64"
-      elif '32' in csv_param['Representation']:
-        param['representation'] = "uint32"
-      elif '16' in csv_param['Representation']:
-        param['representation'] = "uint16"
-      elif '8' in csv_param['Representation'] or '100' in csv_param['Representation']:
-        param['representation'] = "uint8"
-      else: # Default to structured data represented in string
-        param['representation'] = "json"
+    if '1-bit' in csv_param['Representation'] or 'Bool' in csv_param['Representation']:
+      param['representation'] = "boolean"
+    elif '64' in csv_param['Representation']:
+      param['representation'] = "uint64"
+    elif '32' in csv_param['Representation']:
+      param['representation'] = "uint32"
+    elif '16' in csv_param['Representation']:
+      param['representation'] = "uint16"
+    elif '8' in csv_param['Representation'] or '100' in csv_param['Representation']:
+      param['representation'] = "uint8"
+    else: # Default to structured data represented in string
+      param['representation'] = "json"
 
     json_params.append(param)
 # Finished with source CSV file
+
+# json_params can now be output as JSON file
+with open('csv_to_json/parameters.json', 'w') as json_out:
+  json_out.writelines(json.dumps({"all":json_params}, indent=2))
 
 # Process resulting JSON data from json_params back to CSV to compare with original
 with open('csv_to_json/compare.csv', 'w', encoding='utf-8-sig') as csv_out:

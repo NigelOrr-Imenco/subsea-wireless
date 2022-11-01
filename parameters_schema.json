@@ -30,6 +30,7 @@
                 "enum":[
                     "uint8",
                     "uint32",
+                    "uint64",
                     "string",
                     "boolean"
                 ]
@@ -129,6 +130,9 @@
                         "type": "boolean"
                     },
                     "radio": {
+                        "type": "boolean"
+                    },
+                    "no_power": {
                         "type": "boolean"
                     }
                 },
