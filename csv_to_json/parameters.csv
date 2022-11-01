@@ -1,0 +1,182 @@
+﻿Id,Command type2,Function group,Description,Read,Write,Acoustic,Optical,Radio,Induction,Communications,Representation,Notes,Proposed by
+1,Common params,,Manufacturer name,F/F,N/N,,,,,,"Unicode string, null terminated, must read at least first 64 characters",,
+2,SWiG Main,,SWIG Version Major,F/F,N/N,,,,,,"8 bit integer- e.g. version 3.X represented as 3
+",,
+,,,SWIG Version Minor,,,,,,,,8 bit integer- e.g. version X.2 represented as 2,,
+,Type version,,SWIG Type Version Major,,,,,,,,"8 bit integer- e.g. version 3.X represented as 3
+",,
+2,,,SWIG Type Version Minor,F/F,N/N,,,,,,8 bit integer- e.g. version X.2 represented as 2,,
+3,Group params,,Device Type,F/F,N/N,,,,,,"8 bit integer based on enum 
+(e.g. 0 = Acoustic, 1 = FSO, etc)",,
+4,,,C(omms) classification,F/F,N/N,,,,,,1 byte Integer (enum based on table in SWiG standard),,
+,,,P(ower) classification,F/F,N/N,,,,,,1 byte Integer (enum based on table in SWiG standard),,
+,,,D(istance) classification,F/F,N/N,,,,,,1 byte Integer (enum based on table in SWiG standard),,
+,,,Lateral displacement,F/F,N/N,,,,,,Based on table to be defined,Come up with a classification that captures the restrictions for different devices,
+,,,Angular displacement (opening angle?),F/F,N/N,,,,,,Directivity / angle (based on optical standard table?),Come up with a classification that captures the restrictions for different devices,
+,,,Networking capabilites,F/F,N/N,,,,,,Placeholder,,
+5,Manufacturer params,,Hardware Version,F/F,N/N,,,,,,"Unicode string, null terminated",,
+6,,,Firmware version,F/F,N/N,,,,,,"Unicode string, null terminated",,
+7,,,GTIN,F/F,N/N,,,,,,"Unicode string, null terminated",,
+8,,,Unique identifier within manufacturer,F/F,N/N,,,,,,"Unicode string, null terminated",,
+9,,,Product name,F/F,N/N,,,,,,"Unicode string, null terminated",,
+10,Device power input params,,Max Input Power,F/F,N/N,,,,,,"16-bit integer, watts (W)",Datasheet parameters,
+11,,,Min Input Voltage,F/F,N/N,,,,,,"16-bit integer, volts (V) * 10, eg. V=14,9 represented as 149",Datasheet parameters,
+12,,,Max Input Voltage,F/F,N/N,,,,,,"16-bit integer, volts (V) * 10, eg. V=14,9 represented as 149",Datasheet parameters,
+,Device power output params,,Max Design Output Power,F/F,N/N,N,N,N,,N,"16-bit integer, watts (W)",Datasheet parameters,
+,,,Min Output Voltage,F/F,N/N,N,N,N,,N,"16-bit integer, volts (V) * 10, eg. V=14,9 represented as 149",Datasheet parameters,
+,,,Max Output Voltage,F/F,N/N,N,N,N,,N,"16-bit integer, volts (V) * 10, eg. V=14,9 represented as 149",Datasheet parameters,
+13,Standard device params,,Maximum supported data rate,F/F,N/N,,,,,,"32-bit integer, Bits per second (bps)",,
+14,,,Maximum TX Buffer Size,F/F,N/N,,,,,,"32-bit integer, Bytes",Maximum buffer supported for transmission,
+15,,,Maximum Setpoint Wireless power delivery,F/F,N/N,N,N,N,,N,"16-bit integer, power in Watts (W)",,
+16,,,Requested data rate,F/F,F/F,,,,,,"Requested data rate as identified by the communicaiton standard. 32/bit integer, bits per second (bps)",,
+17,,,Current negotiated data rate,F/F,N/N,,,,,,"Bits per second, as 32-bit integer",,
+18,,,Available data rates,F/F,N/N,,,,,,"bit array 32 bits, aligned with listed data rates from relevant standard",are all versions included or just the current level?,
+19,,,Maximum RX buffer size,F/F,N/N,,,,,,"32-bit integer, Bytes",,
+20,Read-only params,,Startup Config,F/F,N/N,,,,,N,Structured data,"Is it necessary? If all initial values at bootup, then in what format?",
+21,,,Status,F/F,N/N,,,,,,"Agree sensor conditions that apply to all of the technologies
+
+16-bit integer, first bit 0 = OK, first bit 1 = there are errors, other bits left to manufacturer",ToDO: Propose list of statuses,"Separate between a high-level view and a more precise detailed view? Error condition vs. error code?
+Something similar to http codes?"
+22,,,Error Code,F/F,N/N,,,,,,"Agree fault conditions that apply to all of the technologies
+
+16-bit integer, manufacturer error code",ToDO: Propose list of error codes,"have an error code that means the device is not capable to transmit
+[14:56] Felix Schill
+to maybe make a start from an OEM perspective for device statuses I can think of (off the cuff, not complete list):device status: booting, sleep, standby, active, shutdownpower status: supply nominal, supply problem (voltage too low/too high)link status: link established, link lostcharging status: disconnected, negotiating, connected and charging, connected but not charging (e.g. battery full)They don't have to all be within this one STATUS flag array, but it may be useful to have a unified summary across devices
+ like 1
+"
+23,,,Uptime,F/F,N/N,,,,,,"Simplify to 32-bit integer seconds since last reboot
+
+Structured data duration since last reboot",,
+24,,,Internal Battery state of charge,F/F,N/N,,,,,,Integer 0 to 100 representing state of charge,Could report in Engineering units but % is probably more useful,
+,,,Internal Battery state of health,F/F,N/N,,,,,,Integer 0 to 100 representing state of health,,To capture the degradation of batteries over time
+25,,,Internal Temperature,F/F,N/N,,,,,,Signed byte in degrees / Deg  C / the temperature should be measured where the manufacturers limit applies,Current internal temperature of device,
+26,Interactive params,,Current Config,F/F,A/A,,,,,N,Structured data,All configured parameters,
+27,,,Date/Time,O/O,O/O,,,,,,64 bit unsigned integer,"RTC date time
+Date and time must be set by the host to keep synchronisation.
+
+UTC seconds since EPOCH",
+28,,,Location,F/F,F/F,,,,,,"Structured data describing location, WGS84 lat/long, Depth, Location quality",Could be static or dynamic,
+29,,,System logs,O/O,N/N,,,,,,Structured data in manufacturer specified format,,
+30,,,Logged data,O/O,N/N,,,,,,Structured data in manufacturer specified format,"e.g. data logger information from attached sensors
+Data should be requested by another command - to be added",
+31,,,Local connection configuration,F/F,F/F,,,,,,"Structured data describing local connection parameters (e.g.
+{eth0:{ip:10.234.123.232, dns:true},
+serial0:{baud:19200, flow:hardware}} )",e.g. includes ethernet MTU,
+32,,,GPIO state,O/O,O/O,,,,,,"Structured data describing state for optional GPIO functions. For write, only need to write required changes.","Include GPIO state (high / low / input) and basic timing functions (e.g. set state for multiple of 100ms, set debounce time for inputs as multiple of 10ms)",
+33,,,TX Power (transmitted power for communications),F/F,F/F,,,,,,"Integer 0-100 in log scale. 100 is maximum power for this product, 0 is minimum power for this product. (If range is 50dB between these, each step is 0.5dB)",,
+34,,,RX Gain,F/F,F/F,,,,,,"Integer 0-100 in log scale. 100 is maximum gain for this product, 0 is minimum gain for this product. (If range is 100dB between these, each step is 1dB)",,
+35,,,Maximum packet size,F/F,F/F,,,,,,"32-bit integer, Byte count (bytes)",packet size on the wireless channel,
+36,,,Buffer size,F/F,F/F,,,,,,"32-bit integer, Byte count (bytes)",need to revisit - not sure / clear how these are used,
+37,,,MTU,F/F,F/F,N,,,,,"16-bit integer, Byte count (bytes)","default 1500, max 9000
+Delete row",
+38,,,Sleep duration (Wake-up interval),F/F,A/A,,,,,,"32 bit integer, in seconds. If 0, device will not sleep (sleep mode disabled).",,
+39,,,inactivity duration before sleep (Stay awake interval),F/F,A/A,,,,,,"32 bit integer, in seconds. If 0, device will not sleep (sleep mode disabled).","Device will go to sleep after this duration, if no stay-awake beacon signal is received.",
+40,,,listen duration (Wake-up probe interval),F/F,A/A,,,,,,"32-bit integer, milliseconds",Duration that the device will check for a wake-up beacon signal before returning to sleep.,
+41,,,Auto gain control,F/F,A/A,N,,,,,0: off. 1: on,Switch for auto gain control ,
+42,,,AGC compensation,F/F,A/A,N,,,,,"16 bit integeter - range is manufacterer dependent
+0-100 scale",AGC compensation value to fine-tune AGC performance,
+43,Statistics params,,Average Noise Level,F/F,N/N,,,,,,,Delete,
+44,Statistics params,,Average Signal Strength Indication (RSSI),F/F,N/N,,,,,,"Integer 0-100. 100 is maximum possible signal strength for this product, 0 is minimum signal strength (no signal)",Device-specific qualitative measurement. It is up to the manufacturer to define. ,
+45,,,Average Datarate,F/F,A/A,,,,N,,"Bits per second, as 32-bit integer",Informative for path selection in hybrid. Measured over last X kbyte? Last X transmissions? Last X days?,
+46,,,Valid Packets received,F/F,A/A,,,,,,32-bit integer. Count since last reset counter command,Request command has a flag to indicate if the value should be reset with the request,
+47,,,Packets lost,F/F,A/A,N,,,,,32-bit integer. Calculated by modem based on sequence counter. Count since last reset counter command.,,
+48,,,Header CRC error,F/F,A/A,,,,,,32-bit integer. Number of packets with invalid CRC. Count since last reset. ,,
+49,,,Payload CRC error,F/F,A/A,N,,,,,32-bit integer. Number of packets with invalid CRC. Count since last reset. ,,
+50,,,FEC correction,F/F,A/A,N,,,,,32-bit integer. Number of packets where FEC allowed to correct errors in the packet. Count since last reset. ,,
+51,,,FEC failures,F/F,A/A,N,,,,,32-bit integer. Number of packets where FEC failed to recover errors in the packet. Count since last reset. ,,
+52,,,Seconds since last packet received,F/F,A/A,,,,,,"32-bit integer, seconds",,
+53,,,Seconds since last reset counter command,F/F,A/A,N,,,,,32-bit integer.  Count since last reset. ,,
+54,,,Background light level,F/F,A/A,N,,N,N,,Logarithmic scale 0-100,,
+55,,,Background noise,F/F,A/A,,,,,,RMS?  Peak to peak?  Spectrum?  Present as structured data,,
+56,,,Number of bytes transmitted ,F/F,A/A,,,,,,32-bit integer.  Count since last since last reset counter command,,
+57,,,Number of bytes received ,F/F,A/A,,,,,,32-bit integer.  Count since last reset counter command,,
+58,Commands,,Save Config,N/N,A/A,,,,,N,"1-bit, auto-clear (0 = idle, 1 = execute)",,
+59,,Helge to confirm changes to E and F and representation,Reset Counters,F/F,A/A,,,,,,"1-bit, auto-clear (0 = inactive idle, 1 = execute execute 2 = complete 3 = error)",,
+60,,Helge to confirm if this can be deleted,Clear Buffer,N/N,A/A,N,,,,,"1-bit, auto-clear (0 = idle, 1 = execute)",,
+61,,,Clear Log,O/O,O/O,N,,,,,"1-bit, auto-clear (0 = idle, 1 = execute)",,
+62,,,,,,,,,,,,,
+63,TX/RX,Helge to confirm if this can be deleted (send data for some special purpose? Not general usual way to send data),Send data,N/N,F/F,,,,,,Unicode string or byte array,,
+64,,Helge to confirm if this is related to ID 60 - can it be deleted,Receive data,F/F,N/N,,,,,,Unicode string or byte array,,
+65,System parameters,,DateTime,N/N,A/A,N,N,N,N,,15 bytes Unsigned Cha,Date and time must be set by the host to keep synchronisation.,
+66,System parameters,Being implemented in Inductive - needs further discussion; Helge to discuss with Sverre,TxFirmwareImage,N/N,A/A,N,,,,,Array of Unsigned Char,The current TX FW image in use.,
+67,,Being implemented in Inductive - needs further discussion; Helge to discuss with Sverre,RxFirmwareImage,N/N,A/A,N,,,,,Array of Unsigned Char,The current RX FW image in use.,
+68,Configuration parameters,Helge to confirm this is the protocol for controlling the SWiG parameters,ProtocolMode,,,N,,,,,Unsigned Integer/8 bit,"0x00 - Binary
+0x01 - ASCII",
+69,,helge to check groups notes  about power,TxInputPowerLimit,N/N,F/F,,,,,N,Power,Power transmitter  maximum wired input power,
+70,,helge to check groups notes  about power,RxOutputPowerLimit,F/F,N/N,,,,,N,Power,"Power receiver maximum wired output power
+
+The transmitter maximum allowed power consumption. The default value is TxPowerCapacity.",
+71,,"Helge to check if relevant to Inductive - N in communciations column for ID 71 to ID 102
+
+if not - maybe move to separate tab / place",ConnectionTimeout,,,N,,,,N,Seconds,Delay after remote side is disconnected before changing ConnectionState to disconnected.,
+72,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 103,DefaultReportingInterval,,,N,,,,N,Seconds,"Default reporting interval for data elements values (Voltage, Current, Ampere, Temperature etc.) which is frequently changes.",
+73,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 104,TxPowerLevels,,,,,,,N,,"Array of one or more PowerLevel data elements, one for each host to transmitter power level the host can restrict the transmitter to use.",
+74,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 105,RxPowerLevels,,,,,,,N,,"Array of one or more PowerLevel data elements, one for each receiver to host power level which the host can restrict the receiver to use.",
+75,Session parameters,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 106,TxSignalStrength,,,N,N,N,N,N,Signal Strength,Signal strength measured at transmitter side. <100 - Remote side disconnected.,
+76,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 107,RxSignalStrength,,,N,N,N,N,N,Signal Strength,Signal strength measured at transmitter side. <100 - Remote side disconnected.,
+77,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 108,PowerTransferState,,,N,N,N,,N,Unsigned Integer/8 bit,"0x00 - Power transfer is not active
+Transmitter and/or receiver host has turned off power transfer. This can happen due to an alarm.
+0x01 - Power transfer is active",
+78,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 109,ConnectionState,,,N,,,,N,Unsigned Integer/16 bit,"0x00 - Disconnected
+Transmitter and receiver coils are not within valid distance from each other (signal strength < 100)
+>= 0x01 - Connected
+0x01 is the initial value when a connection  has been established. If power transfer is temporarily stopped and resumed towards the same remote device (identified by the Product ID) within ConnectionTimeout seconds, the value is incremented by 0x01.",
+79,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 110,ConnectionDuration,,,N,,,,N,Unsigned Integer/16 bit,"Connection duration in seconds reported when ConnectionState changes to Disconnected.
+ConnectionDuration will be limited at 0xFFFF and further time will not be tracked.",
+80,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 111,TxRemotePowerOutputEnable,,,,,,,N,Boolean,0x00 - Disconnected,
+81,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 112,RxPowerOutputEnable,,,N,N,N,,N,Boolean,"Power transfer state, receiver to host, set by receiver.
+TRUE - receiver to host power transfer is enabled
+FALSE - receiver to host power transfer is disabled",
+82,Power parameters,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 113,TxInputCurrent,,,N,N,N,,N,Current,Transmitter input current from host.,
+83,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 114,RxOutputCurrent,,,N,N,N,,N,Current,Receiver output current to host.,
+84,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 115,TxInputVoltage,,,N,N,N,,N,Voltage,Transmitter input voltage from host.,
+85,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 116,RxOutputVoltage,,,N,N,N,,N,Voltage,Receiver output voltage to host.,
+86,Alarms,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 117,TxHighCurrent,,,N,N,N,,N,TxHighCurrent,Power transfer has been turned off due to transmitter input current from host being too high.,
+87,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 118,RxHighCurrent,,,N,N,N,,N,RxHighCurrent,Power transfer has been turned off due to receiver output current to host being too high.,
+88,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 119,TxHighVoltage,,,N,N,N,,N,TxHighVoltage,Power transfer has been turned off due to transmitter input voltage from host being too high.,
+89,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 120,RxHighVoltage,,,N,N,N,,N,RxHighVoltage,Power transfer has been turned off due to receiver output voltage to host being too high.,
+90,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 121,TxForeignObjectDetected,,,N,N,N,,N,TxForeignObjectDetected,"Power transfer has been turned off due to a foreign object on the coil, detected by the TX side, which cause a degrade in the power transfer efficiency and a risk for coil cover damage due to heat.",
+91,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 122,RxForeignObjectDetected,,,N,N,N,,N,RxForeignObjectDetected,"Power transfer has been turned off due to a foreign object on the coil, detected by the RX side, which cause a degrade in the power transfer efficiency and a risk for coil cover damage due to heat.",
+92,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 123,TxHighTemperature,,,N,N,N,,N,TxHighTemperature,Power transfer has been turned off due to high temperature on the TX side.,
+93,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 124,RxHighTemperature,,,N,N,N,,N,RxHighTemperature,Power transfer has been turned off due to high temperature on the TX side.,
+94,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 125,SystemFailure,,,N,N,N,N,N,SystemFailure,,
+95,Alarms,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 126,TxTemperature,,,N,N,N,,N,Temperature,TxTemperature,
+96,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 127,RxTemperature,,,N,N,N,,N,Temperature,RxTemperature,
+97,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 128,TxPressure,,,N,N,N,,N,Pressure,TxPressure,
+98,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 129,RxPressure,,,N,N,N,,N,Pressure,RxPressure,
+99,Commands,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 130,Read,,,N,,,,N,,"Reads one or more data elements identified by the data element tag or data element category tag (read all data elements in a category). The response is a list of one or more [DataElementTag, value]. Data elements which cannot be accessed or doesn't have a valid value will not be included in the response.",
+100,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 131,Write,,,N,,,,N,,"Writes a one or more [DataElementTag, value].",
+101,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 132,SetReportingInterval,,,N,,,,N,,"Set the reporting interval,[DataElementTag, ReportingInterval], for a data element or category.",
+102,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 133,GetReportingInterval,,,N,,,,N,,"Get the reporting interval for a data element or data element category (get all data elements in a category) The response is a list of zero or more [DataElementTag, value], where the value is the reporting interval in seconds.",
+103,,Helge to check if relevant to Inductive - N in communciations column for ID 70 to ID 134,Reset,,,N,,,,N,,,
+104,Core command,,"Temperature 2,3,4",F/F,,N,N,N,,N,,Several temperature data may be generated in WPT.,
+105,Core command,,WPT status, F/F ,,N,N,N,,N,"5bits, 00000b:nop, ----1b:ready, ---1-b:load(vehicle) exists, --1--b:com linked, -1---:power supplying, 1----b:error","Nop means only the cotrol power is turned on. Ready means the power transmitting available.
+Should it be in GPIO?",
+106,Manufacturer command,,Current/Power Control availability,F/F,O/O,N,N,N,,N,"2bits, sum of 00:CCCV, 01:Current control available, 10:Power control available",WPT Type2 control mode ability,
+107,Core command,,Current/Power Controlled Staus,F/F,,N,N,N,,N,"2bits, one of 00:CCCV, 01:Current controlled, 10:Power controlled","This status set by the load(vehicle) in config phase.
+GPIO?",
+108,Schedule HDC,,Schedule network for shared high-speed usage,F/F,A/A,,,,N,,"8 bits source, 8 bits destination (destination equals source), 1 bit ACK, 7 bit primary CRC, 256-bit bitfield for destinations. 6 bits present hour, 7 bits present minutes, 7 bits present seconds, 6 bits start hour, 7 bits start minute, 7 bits start second, 16 bits duration in seconds, 16 bits code SMAC modulator center frequency in Hz (or code as appropriate), 12 bits SMAC modulator bandwidth in Hz (or code as appropriate), 10 bits HDC modulator identification code, 16 bits HDC modulator center frequency code, 16 bits HDC modulator bandwidth code","HDC: High Data rate channel
+SMAC:  Simultaneous Multiple Access Channel (Network Channel)",
+109,Data message SMAC,,"User data, source, destination(s), ACK required",F/F,,,,,N,,"8 bits source, 8 bits destination, 1 bit ACK required, 8 bit number of blocks, 7 bit primary CRC. 256 bit bitfield for destination for multicast if source value equals destination value. Arbitrary message length derived from number of blocks",SMAC:  Simultaneous Multiple Access Channel (Network Channel),
+110,ACK,,"Source, destination, has responding",F/F,,,,,N,,"23 bits: 8 bit source, 8 bit destination, 7 bit CRC of message being acknowledged",,
+111,UUID announcement,,Announce presence for ad hoc network,F/F,,,,,N,,"32 bit UUID, 8 bit requested local ID",,
+112,UUID ACK,,Requested local ID grant,F/F,,,,,N,,32-bit UUID,,
+113,UUID NACK,,Requested local ID deny,F/F,,,,,N,,32-bit UUID,,
+114,Default SMAC modulator delaration,,Master declaration of change of default SMAC modulator,F/F,A/A,,,,N,,"8 bits source, 8 bits destination (destination equals source), 1 bit ACK, 7 bit primary CRC, 256-bit bitfield for destinations. 6 bits present hour, 7 bits present minutes, 7 bits present seconds, 6 bits start hour, 7 bits start minute, 7 bits start second, 10 bit SMAC modulator code, 16 bits code SMAC modulator center frequency in Hz (or code as appropriate), 12 bits SMAC modulator bandwidth in Hz (or code as appropriate)",SMAC:  Simultaneous Multiple Access Channel (Network Channel),
+115,Relay node designation,,Declare and configure node as a relay,F/F,A/A,,,,N,,"8 bits source, 8 bits destination, 1 bit ACK (always set), 7 bit primary CRC, followed by relay table (format TBD)",,
+116,Relay node de-assignment,,Remove node as relay,F/F,A/A,,,,N,,"8 bits source, 8 bits destination, 1 bit ACK (always set), 7 bit primary CRC",,
+117,Mesh node designation,,Declare and configure node as a mesh forwarder,F/F,A/A,,,,N,,"8 bits source, 8 bits destination, 1 bit ACK (always set), 7 bit primary CRC, followed by mesh table (format TBD)",,
+118,Mesh node de-assignment,,Remove node as mesh forwarder,F/F,A/A,,,,N,,"8 bits source, 8 bits destination, 1 bit ACK (always set), 7 bit primary CRC",,
+119,Network full reset,,Reset network,F/F,A/A,,,,N,,"6 bits hour, 7 bits minutes, 7 bits seconds",,
+120,TDMA timeslot designation,,Assign timeslot,F/F,A/A,,,,N,,"6 bits hour, 7 bits minutes, 7 bits second, 6 bits start hour, 7 bits start minutes, 7 bits start seconds, 16 bits timeslot duration in seconds, 16 bits number of timeslots, 16 bits timeslot number",,
+121,TDMA deselection,,Deassign timeslot,F/F,A/A,,,,N,,,,
+122,CSMA designation,,Turn on CSMA for node,F/F,A/A,,,,N,,no data,,
+123,CSMA de-designation,,Turn off CSMA for node,F/F,A/A,,,,N,,no data,,
+124,Keepalive,,Allow network reset if control lost,F/F,A/A,,,,N,,"6 bits hour, 7 bits minutes, 7 bits seconds, 6 bits hour for reset, 7 bits minutes for reset, 7 bit seconds for reset",,
+125,Request SMAC modem capabilties,,Ask for capabilities,F/F,A/A,,,,N,,no data,,
+126,Report SMAC modem capabilities,,Report capabilities,F/F,A/A,,,,N,,"8 bits bitfield for supported modulations, 1 bit CSMA support, 1 bit self-cancellation support, 1 bit supports time-frequency scaling (needed for legacy equipment)",,
+127,Request HDC modem capabilities,,Ask for capabilities,F/F,A/A,,,,N,,no data,,
+128,Report HDC modem capabilities,,Report capabilities,F/F,A/A,,,,N,,"16 bits number of modulations supported, N x 16 code for each modulation supported",,
+129,,,,,,,,,,,,,
+130,,,,,,,,,,,,,
+,,,,,,,,,,,,,
