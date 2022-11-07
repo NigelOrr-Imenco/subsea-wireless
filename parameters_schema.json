@@ -18,21 +18,23 @@
                 "description": "A machine-useable description of the parameter with no whitespace",
                 "type": "string",
                 "maximumLength": 256
-            }
+            },
             "description": {
                 "description": "A human-readable description of the parameter",
                 "type": "string",
                 "maximumLength": 256
             },
-            "type": {
+            "representation": {
                 "description": "Data type of the parameter",
                 "type": "string",
                 "enum":[
                     "uint8",
+                    "uint16",
                     "uint32",
                     "uint64",
                     "string",
-                    "boolean"
+                    "boolean",
+                    "json"
                 ]
             },
             "minimum": {
@@ -57,10 +59,16 @@
                             "read": {
                                 "type": "boolean"
                             },
+                            "read_option": {
+                                "type": "boolean"
+                            },
                             "read_auth": {
                                 "type": "boolean"
                             },
                             "write": {
+                                "type": "boolean"
+                            },
+                            "write_option": {
                                 "type": "boolean"
                             },
                             "write_auth": {
@@ -69,6 +77,8 @@
                         },
                         "additionalProperties": false,
                         "dependentRequired": {
+                            "read_option":["read"],
+                            "write_option":["write"],
                             "read_auth":["read"],
                             "write_auth":["write"]
                         }
@@ -79,10 +89,16 @@
                             "read": {
                                 "type": "boolean"
                             },
+                            "read_option": {
+                                "type": "boolean"
+                            },
                             "read_auth": {
                                 "type": "boolean"
                             },
                             "write": {
+                                "type": "boolean"
+                            },
+                            "write_option": {
                                 "type": "boolean"
                             },
                             "write_auth": {
@@ -91,6 +107,8 @@
                         },
                         "additionalProperties": false,
                         "dependentRequired": {
+                            "read_option":["read"],
+                            "write_option":["write"],
                             "read_auth":["read"],
                             "write_auth":["write"]
                         }
@@ -141,7 +159,7 @@
                 "uniqueItems": true
             }
         },
-        "required": [ "id", "name", "description", "type" ]
+        "required": [ "id", "name", "description", "representation" ]
     },
     "additionalItems":false
 }

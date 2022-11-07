@@ -15,13 +15,13 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
     if len(csv_param['Id']) == 0:
       if len(csv_param['Description']) != 0:
         # print (f'After ID {last_id} - Assigning new ID {new_id} to line [{csv_param}]')
-        param['id'] = f'{new_id}'
+        param['id'] = new_id
         new_id += 1
       else: # Assume blank line
         # print(f'After ID {last_id} Dropping line [{csv_param}]')
         continue
     else:
-      param['id'] = csv_param['Id']
+      param['id'] = int(csv_param['Id'])
       last_id = param['id'] # Used in debug message above to locate missing IDs
     # For name, replace ' ' or '-' with '_', convert to lowercase and remove other non-alphanumeric characters
     param_name = csv_param['Description'].lower().replace(' ','_').replace('-','_').replace('(','').replace(')','').replace('?','')
@@ -42,32 +42,32 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
     if reads[0] != 'N' and writes[0] != 'N':  # Some dry access is allowed
       access['dry'] = {}  # Create 'dry' section
       if reads[0] != 'N': # read is possible
-        access['dry']['read'] = 'true'
+        access['dry']['read'] = True
       if reads[0] == 'A': # requires authentication
-        access['dry']['read_auth'] = 'true'
+        access['dry']['read_auth'] = True
       if reads[0] == 'O': # manufacturer option to implement
-        access['dry']['read_option'] = 'true'
+        access['dry']['read_option'] = True
       if writes[0] != 'N': # write is possible
-        access['dry']['write'] = 'true'
+        access['dry']['write'] = True
       if writes[0] == 'A': # requires authentication
-        access['dry']['write_auth'] = 'true'
+        access['dry']['write_auth'] = True
       if writes[0] == 'O': # manufacturer option to implement
-        access['dry']['write_option'] = 'true'
+        access['dry']['write_option'] = True
       
     if reads[1] != 'N' and writes[1] != 'N':  # Some wet access is allowed
       access['wet'] = {}  # Create 'wet' section
       if reads[1] != 'N': # read is possible
-        access['wet']['read'] = 'true'
+        access['wet']['read'] = True
       if reads[1] == 'A': # requires authentication
-        access['wet']['read_auth'] = 'true'
+        access['wet']['read_auth'] = True
       if reads[1] == 'O': # manufacturer option to implement
-        access['wet']['read_option'] = 'true'
+        access['wet']['read_option'] = True
       if writes[1] != 'N': # write is possible
-        access['wet']['write'] = 'true'
+        access['wet']['write'] = True
       if writes[1] == 'A': # requires authentication
-        access['wet']['write_auth'] = 'true'
+        access['wet']['write_auth'] = True
       if writes[1] == 'O': # manufacturer option to implement
-        access['wet']['write_option'] = 'true'
+        access['wet']['write_option'] = True
       
       param['access'] = access
 
@@ -75,15 +75,15 @@ with open('csv_to_json/parameters.csv', encoding='utf-8-sig') as csv_file:
       optional = {}
       # print(param['id'], "Options: ", csv_param['Acoustic'], csv_param['Optical'], csv_param['Radio'], csv_param['Induction'], csv_param['Communications'])
       if csv_param['Acoustic'] == 'N':
-        optional['acoustic'] = 'true'
+        optional['acoustic'] = True
       if csv_param['Optical'] == 'N':
-        optional['optical'] = 'true'
+        optional['optical'] = True
       if csv_param['Radio'] == 'N':
-        optional['radio'] = 'true'
+        optional['radio'] = True
       if csv_param['Induction'] == 'N':
-        optional['inductive'] = 'true'
+        optional['inductive'] = True
       if csv_param['Communications'] == 'N':  # Only required for power transfer
-        optional['no_power'] = 'true'
+        optional['no_power'] = True
         
       param['optional'] = optional
 
@@ -178,7 +178,7 @@ with open('csv_to_json/compare.csv', 'w', encoding='utf-8-sig') as csv_out:
       elif field == "optional":  # Extract exception columns
         options = param.get(field,{})
         for exception in ['acoustic', 'optical', 'radio', 'inductive', 'power']:
-          if options.get(exception,'false') == 'true':  # If exception is offered for this technology
+          if options.get(exception, False) == True:  # If exception is offered for this technology
             csv_fields.append("N")
           else:
             csv_fields.append("")
