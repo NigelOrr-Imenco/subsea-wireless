@@ -12,10 +12,10 @@ UDP_ROV_WET_PORT = 55522
 UDP_REMOTE_PORT = 55503
 # UDP_PORTS = {"vessel":UDP_VESSEL_PORT, "rov":UDP_ROV_PORT, "remote":UDP_REMOTE_PORT}
 INTERFACES = {
-    # "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
-    "vessel":["serial", "COM8", 19200],
-    # "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
-    "rov_dry":["serial", "COM9", 19200],
+    "vessel":["udp", UDP_IP, UDP_VESSEL_PORT],
+    # "vessel":["serial", "COM8", 19200],
+    "rov_dry":["udp", UDP_IP, UDP_ROV_DRY_PORT],
+    # "rov_dry":["serial", "COM9", 19200],
     "rov_wet":["udp", UDP_IP, UDP_ROV_WET_PORT],
     "remote":["udp", UDP_IP, UDP_REMOTE_PORT],
     }
@@ -26,11 +26,17 @@ with open('parameters.json') as json_file:  # Provide wireless_parameter_specifi
     full_spec = json.load(json_file)["all"]
     # load the parameters into dictionary keyed by ID
     spec_by_id = {}
+    spec_by_name = {}
     for param in full_spec:
         spec_by_id[param["id"]] = param
+        spec_by_name[param["name"]] = param
 
-def get_specification(id):
-    return spec_by_id[id]
+def get_specification(key):
+    if isinstance(key, int):
+        print(f"common ID:{key}: Spec:{spec_by_id[key]}")
+        return spec_by_id[key]
+    else:
+        return spec_by_name[key]
 
 
 def report(proto, description=""):

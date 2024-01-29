@@ -13,7 +13,7 @@ else:
     print(f"Interface definition not supported for {my_name} - {INTERFACES[my_name]}")
 
 # Status of the various SWiG parameters with some initial demo values
-my_status = {1:"The Subsea Wireless Co. Ltd.", 2:1, 101:4, 55:35}
+my_status = {1:"The Subsea Wireless Co. Ltd.", 2:1, 129:4, 55:35}
 
 while True:
     data = None

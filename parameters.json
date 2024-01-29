@@ -25,12 +25,6 @@
       "representation": "uint8"
     },
     {
-      "id": 2,
-      "name": "swig_type_version_minor",
-      "description": "SWIG Type Version Minor",
-      "representation": "uint8"
-    },
-    {
       "id": 3,
       "name": "device_type",
       "description": "Device Type",
@@ -774,7 +768,7 @@
           "write_auth": true
         }
       },
-      "representation": "json"
+      "representation": "uint8"
     },
     {
       "id": 56,
@@ -1758,18 +1752,6 @@
         "inductive": true
       },
       "representation": "uint16"
-    },
-    {
-      "id": 129,
-      "name": "",
-      "description": "",
-      "representation": "json"
-    },
-    {
-      "id": 130,
-      "name": "",
-      "description": "",
-      "representation": "json"
     }
   ]
 }

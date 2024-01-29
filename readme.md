@@ -22,7 +22,13 @@ The demo scripts read the json file directly to get detail which can be used to 
 
 ### Usage
 Use Python to run the rov.py and remote.py scripts, starting the simulated subsea devices.
-Then use Python to run vessel.py . In the demo, it will interrogate each modem (the ROV one and the remote one) for some parameters and print the results on the console.
+Then either:
+* use Python to run vessel.py or
+* use Python to run mqtt_bridge.py and then in a separate terminal use Python to run mqtt_vessel.py
+
+Either vessel or MQTT vessel demos will interrogate each modem (the ROV one and the remote one) for some parameters and print the results on the console.
+
+If running the MQTT version, an MQTT client such as [MQTT explorer](https://mqtt-explorer.com/) connected to the same broker is useful to view the updated broker state
 
 ## Serial support
 To use serial ports for communications, install python serial
@@ -33,6 +39,7 @@ Example implementation of serial and UDP alternatives are commented out in the s
 ## Protobuf
 `pip install protobuf` installs protobuf support for python
 `pip install cobs` installs COBS support, to guarantee buffers only have nulls as terminating bytes for transmission
+`pip install paho-mqtt` installs MQTT support for the MQTT bridge demonstration
 `pip show protobuf` confirms version of python protobuf installed 
 
 On initial test, output of pip show protobuf was

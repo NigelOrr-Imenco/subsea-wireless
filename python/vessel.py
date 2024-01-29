@@ -19,7 +19,7 @@ request_stats.source = my_id
 for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one remote
     request_stats.target = target
     # request_stats.requests[:] = [1, 2, 55]
-    request_stats.requests[:] = [1, 2, 101, 55]
+    request_stats.requests[:] = [1, 2, 129, 55]
     # report(request_stats)
 
 # Vessel can only communicate through ROV modem's dry interface
@@ -50,11 +50,11 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
                 for response in message.responses:
                     spec = get_specification(response.id)
                     # print(response, spec)
-                    if spec["type"] == "uint8" or spec["type"] == "uint32":
+                    if spec["representation"] == "uint8" or spec["representation"] == "uint32":
                         device_status[message.source][response.id] = response.integer
-                    elif spec["type"] == "string":
+                    elif spec["representation"] == "string":
                         device_status[message.source][response.id] = response.string
-                    elif spec["type"] == "boolean":
+                    elif spec["representation"] == "boolean":
                         device_status[message.source][response.id] = response.bool
                     else:
                         print(f"No supported data type provided for parameter {response.id} in {str(response)}")
@@ -68,4 +68,4 @@ for target in [2, 4]:   # Two SWiG wireless devices available, one wired, one re
 print("|       *Manufacturer Name*       | *Ver.* | *Noise* |")
 for device in [2, 4]:
     status = device_status[device]
-    print(f'| {status[1]:<32}|  V{status[2]}.{status[101]}  |  {status[55]:^5}  |')
+    print(f'| {status[1]:<32}|  V{status[2]}.{status[129]}  |  {status[55]:^5}  |')

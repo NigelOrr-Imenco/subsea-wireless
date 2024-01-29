@@ -23,7 +23,7 @@ else:
     print(f"Interface definition not supported for {wet_interface_name} - {INTERFACES[wet_interface_name]}")
 
 # Status of the various SWiG parameters with some initial demo values
-my_status = {1:"Truly Fast Subsea Wireless Pty.", 2:1, 101:2, 55:63}
+my_status = {1:"Truly Fast Subsea Wireless Pty.", 2:1, 129:2, 55:63}
 
 while True:
     data = None
@@ -55,21 +55,22 @@ while True:
             response.source = my_id
             response.target = message.source
             # Handle sets
-            # print(message.parameters)
+            print(message)
             # Handle gets and populate responses
             for id in message.requests:
                 parameter=response.responses.add()
                 parameter.id = id
                 spec = get_specification(id)  # Get the dictionary specification for this ID
+                print(f"Specification for requested{id}:{spec}")
                 value = my_status.get(id, None)
-                if spec["type"] == "uint8" or spec["type"] == "uint32":
+                if spec["representation"] == "uint8" or spec["representation"] == "uint32":
                     parameter.integer = value
-                elif spec["type"] == "string":
+                elif spec["representation"] == "string":
                     parameter.string = value
-                elif spec["type"] == "boolean":
+                elif spec["representation"] == "boolean":
                     parameter.bool = value
                 else:
-                    print(f'unsupported data type for ID{parameter.id} - {spec["type"]}')
+                    print(f'unsupported data type for ID{parameter.id} - {spec["representation"]}')
                     pass # Ignore it, nothing more can be done
             # print(str(response))
             # Vessel can only communicate through ROV modem's dry interface
