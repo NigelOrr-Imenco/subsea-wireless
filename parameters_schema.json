@@ -32,9 +32,14 @@
                     "uint16",
                     "uint32",
                     "uint64",
-                    "string",
+                    "int8",
+                    "int16",
+                    "int32",
+                    "int64",
+                    "utf-8 string",
+                    "bytearray",
                     "boolean",
-                    "json"
+                    "json?"
                 ]
             },
             "minimum": {
