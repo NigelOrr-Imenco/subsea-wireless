@@ -27,7 +27,7 @@
             "representation": {
                 "description": "Data type of the parameter",
                 "type": "string",
-                "enum":[
+                "enum": [
                     "uint8",
                     "uint16",
                     "uint32",
@@ -82,10 +82,18 @@
                         },
                         "additionalProperties": false,
                         "dependentRequired": {
-                            "read_option":["read"],
-                            "write_option":["write"],
-                            "read_auth":["read"],
-                            "write_auth":["write"]
+                            "read_option": [
+                                "read"
+                            ],
+                            "write_option": [
+                                "write"
+                            ],
+                            "read_auth": [
+                                "read"
+                            ],
+                            "write_auth": [
+                                "write"
+                            ]
                         }
                     },
                     "wet": {
@@ -112,10 +120,18 @@
                         },
                         "additionalProperties": false,
                         "dependentRequired": {
-                            "read_option":["read"],
-                            "write_option":["write"],
-                            "read_auth":["read"],
-                            "write_auth":["write"]
+                            "read_option": [
+                                "read"
+                            ],
+                            "write_option": [
+                                "write"
+                            ],
+                            "read_auth": [
+                                "read"
+                            ],
+                            "write_auth": [
+                                "write"
+                            ]
                         }
                     }
                 },
@@ -164,7 +180,12 @@
                 "uniqueItems": true
             }
         },
-        "required": [ "id", "name", "description", "representation" ]
+        "required": [
+            "id",
+            "name",
+            "description",
+            "representation"
+        ]
     },
-    "additionalItems":false
+    "additionalItems": false
 }
