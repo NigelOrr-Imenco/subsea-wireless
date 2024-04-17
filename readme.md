@@ -65,8 +65,18 @@ Command line to create `python\parameters_pb2.py` (assuming protoc is extracted 
 ## Misc Notes
 - Index by parameter ID, easy to make it unique
 - default for all access is 'no', only list free/authenticated. If manufacturer optional, add separate field for this?
-- auth authenticated how, and per connection assumed (i.e. make and authenticate connection, not per message?)
-- if auth is specified in standard, is it a)allowed or b)required? maybe better to leave out auth for now
 - Minimum for Standard compliance major and minor should always be set as the current version of the standard as of this document
 - Wet type 0=acoustic, 1=optical, 2=inductive, 3=radio, minimum and maximum set accordingly. Does it need to be a list of types supported in this standard instead?
 - Background light level and noise are set as read-only (writable with auth on spreadsheet V3_20Jul22 presumed typo)
+- `access` properties:
+    - `read` and `write` – This parameter is readable (for `read`) or writeable (for `write`) for this interface if implemented (see `read_option` / `write_option`). If not specified, default to false, i.e. this parameter is not accessible to be read (`read`) or written (`write`) on this interface
+    - `read_option` and `write_option` – Implementation of this parameter is optional. If not specified, default to false, i.e. the parameter must be implemented. Some examples where this might be useful:
+        - parameters which are useful to report or characterise a link but may restrict implementation for simple systems and is not required to establish and maintain a wireless link (e.g. performance stats)
+        - parameters which may be widely implemented but are not essential to establish and maintain the wireless link, but if implemented would be desirable to have a consistent interface (e.g. reading ambient temperature)
+        - parameters which are only relevant where additional functionality is included (e.g. a ‘sleep to low power after X minutes’ configuration would require a consistent interface, but is not required for communications)
+   - `read_auth` and `write_auth` – This parameter may only be read (`read_auth`) or written (`write_auth`) by an authenticated connection. If not specified, default to false, i.e. the parameter is not protected by SWiG specified authentication. Note:
+       - SWiG does not yet specify how to implement an authenticated connection, and does not guarantee to ever implement such a connection, so the associated `_auth` effectively makes the parameter unavailable until authentication is implemented.
+       - Specification of an authenticated connection is complex. For example, SWiG will need to decide how authentication is implemented (TLS, tokens, or one of many other options), whether per connection (i.e. make and authenticate connection) or per message (where each message would need authentication tokens to be included), and many other items.
+       - Specification will also needs to clarify if `_auth` properties mean that authentication is a)allowed or b)required?
+
+
