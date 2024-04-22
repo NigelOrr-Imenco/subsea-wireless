@@ -1,0 +1,42 @@
+Recommendations for consistent parameter definitions:
+- `name`
+    - minimum unambiguous description of the parameter, expected to be used as variable names or other machine-readable applications
+    - lowercase alphanumeric latin alphabet only
+    - words delineated by underscore `_` character for clarity
+    - no other punctuation or special characters
+    - consistent abbreviations to include:
+        - `min` and `max`
+        - `comms` and `power` prefix to disambiguate communications and power parameters with similar names
+- `description`
+    - minimum unambiguous human-readable description of the parameter
+    - may contain extended character sets, punctuation etc.
+    - consistent with the associated `name`
+
+
+In 2024-04, parameters defined in the initial spreadsheet were converted to JSON consistent with the schema. This was initially undertaken using the included csv_to_json Python script. After this, a manual conversion process was completed to compare the JSON to the spreadsheet and propose updated names and descriptions to maintain internal consistency. Main changes during this process are noted below:
+- Duplicate ID '2' was used for SWIG Version Major and SWIG Type Version Minor. Added manual entry for SWIG Type Version Minor with ID 140
+- Renamed 'SWiG type version' to 'SWiG type' to reflect usage
+- Updated `lateral_displacement` and `directivity` description and representation
+- Renamed some parameters (script had used description) - e.g. manufacturer_unique_identifier
+- removed units from name (retained `bytes` descriptor)
+- Changed name to use `max` and `min` and description to use `maximum` and `minimum`
+- Used `tx` and `rx` in name, and `transmitter` and `receiver` in description
+- Added units examples where appropriate (e.g. Voltage(dV) )
+- Set available data rates as json (representation to be determined), was int type but may be discrete list rather than just one maximum value?
+- Remove capitalisation from name and description where appropriate
+- Is 31 local_connection_configuration related to 135 networking_capabilities?
+- 41, 42 AGC parameters represented as integer/enum?
+- 43 Average noise level represented as uint8, presumed dB above threshold
+- 43 average noise level same as 55 background noise?
+- 62 removed - blank line
+- 65 removed - strike-through Date/Time line, duplicate of other parameter
+- 68 to 76 updated data types (script converted as default json where not clear from CSV)
+- 75 possible duplicate of 33 comms_tx_power
+- 76 possible duplicate of 44 rssi
+- 86 to 89 renamed to clarify these are limits set on power transfer parameters
+- 82 to 89 changed data type to uint16 to represent voltage/current in likely ranges from default json
+- 99 and 100 are unclear, may be commands rather than parameters so move to protocol definition
+- 101 and 102 are setter/getter for the same parameter, removed 102
+- 105 power status and 107 power control status propose uint8 to represent enumerated status values
+- 122 and 123 are setter/getter, removed 123
+- 125 to 128 are setters/getters for different parts of capabilities (originally only/specifically for Level 3 acoustics but principle is more widely applicable). Reduced to single JSON that can be used for any tech capabilities

@@ -39,7 +39,7 @@
                     "utf-8 string",
                     "bytearray",
                     "boolean",
-                    "json?"
+                    "json"
                 ]
             },
             "minimum": {
