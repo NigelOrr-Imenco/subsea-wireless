@@ -1,0 +1,54 @@
+{
+  "all": [
+	  {
+		  "name": "time_since_0000",
+		  "description": "time in seconds since 0000 UTC",
+		  "representation": "uint32",
+		  "minimum": 0,
+		  "maximum": 86400
+	  },
+	  {
+		  "name": "start_time",
+		  "description": "start time in seconds since 0000 UTC",
+		  "representation": "uint32",
+		  "minimimum": 0,
+		  "maximum": 86400
+	  },
+	  {
+		  "name": "duration",
+		  "description": "duration of reservation in seconds",
+		  "representation": "uint16"
+	  },
+	  {
+		  "name": "smac_fc_code",
+		  "description": "Fc carrier frequency code for SMAC",
+		  "representation": "uint16",
+		  "minimum": 0,
+		  "maximum": 32767
+	  },
+	  {
+		  "name": "smac_rate_code",
+		  "description": "rate code for SMAC",
+		  "representation": "uint16",
+		  "minimum": 0,
+		  "maximum": 4095
+	  },
+	  {
+		  "name": "hdc_phy_parameter_1",
+		  "description": "PHY parameter 1 for PHY",
+		  "representation": "uint16",
+		  "minimum": 0,
+		  "maximum": 1023
+	  },
+	  {
+		  "name": "hdc_phy_parameter_2",
+		  "description": "PHY parameter 2 for PHY",
+		  "representation": "uint16",
+	  },
+	  {
+		  "name": "hdc_phy_parameter_3",
+		  "description": "PHY parameter 3 for PHY",
+		  "representation": "uint16",
+	  }
+  ]
+}

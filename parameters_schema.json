@@ -7,163 +7,175 @@
         "title": "parameter",
         "description": "A SWiG parameter",
         "type": "object",
-        "properties": {
-            "id": {
-                "description": "unique identifier",
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 255
-            },
-            "name": {
-                "description": "A machine-useable description of the parameter with no whitespace",
-                "type": "string",
-                "maximumLength": 256
-            },
-            "description": {
-                "description": "A human-readable description of the parameter",
-                "type": "string",
-                "maximumLength": 256
-            },
-            "representation": {
-                "description": "Data type of the parameter",
-                "type": "string",
-                "enum":[
-                    "uint8",
-                    "uint16",
-                    "uint32",
-                    "uint64",
-                    "int8",
-                    "int16",
-                    "int32",
-                    "int64",
-                    "utf-8 string",
-                    "bytearray",
-                    "boolean",
-                    "json"
-                ]
-            },
-            "minimum": {
-                "description": "Minimum integer value",
-                "type": "integer"
-            },
-            "maximum": {
-                "description": "Maximum integer value",
-                "type": "integer"
-            },
-            "pattern": {
-                "description": "Regular expression pattern which parameter values must match",
-                "type": "string"
-            },
-            "access": {
-                "description": "Permitted access to the parameter",
-                "type": "object",
-                "properties": {
-                    "dry": {
-                        "type": "object",
-                        "properties": {
-                            "read": {
-                                "type": "boolean"
-                            },
-                            "read_option": {
-                                "type": "boolean"
-                            },
-                            "read_auth": {
-                                "type": "boolean"
-                            },
-                            "write": {
-                                "type": "boolean"
-                            },
-                            "write_option": {
-                                "type": "boolean"
-                            },
-                            "write_auth": {
-                                "type": "boolean"
-                            }
-                        },
-                        "additionalProperties": false,
-                        "dependentRequired": {
-                            "read_option":["read"],
-                            "write_option":["write"],
-                            "read_auth":["read"],
-                            "write_auth":["write"]
-                        }
-                    },
-                    "wet": {
-                        "type": "object",
-                        "properties": {
-                            "read": {
-                                "type": "boolean"
-                            },
-                            "read_option": {
-                                "type": "boolean"
-                            },
-                            "read_auth": {
-                                "type": "boolean"
-                            },
-                            "write": {
-                                "type": "boolean"
-                            },
-                            "write_option": {
-                                "type": "boolean"
-                            },
-                            "write_auth": {
-                                "type": "boolean"
-                            }
-                        },
-                        "additionalProperties": false,
-                        "dependentRequired": {
-                            "read_option":["read"],
-                            "write_option":["write"],
-                            "read_auth":["read"],
-                            "write_auth":["write"]
-                        }
-                    }
-                },
-                "additionalProperties": false
-            },
-            "valid integers": {
-                "description": "Valid integers",
-                "type": "array",
-                "items": {
-                    "type": "integer"
-                },
-                "minItems": 1,
-                "uniqueItems": true
-            },
-            "valid strings": {
-                "description": "Valid strings",
-                "type": "array",
-                "items": {
-                    "type": "string"
-                },
-                "minItems": 1,
-                "uniqueItems": true
-            },
-            "optional": {
-                "description": "Technology optional",
-                "type": "object",
-                "properties": {
-                    "acoustic": {
-                        "type": "boolean"
-                    },
-                    "optical": {
-                        "type": "boolean"
-                    },
-                    "inductive": {
-                        "type": "boolean"
-                    },
-                    "radio": {
-                        "type": "boolean"
-                    },
-                    "no_power": {
-                        "type": "boolean"
-                    }
-                },
-                "additionalProperties": false,
-                "minItems": 1,
-                "uniqueItems": true
-            }
+      "properties": {
+        "id": {
+          "description": "unique identifier",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
         },
+        "name": {
+          "description": "A machine-useable description of the parameter with no whitespace",
+          "type": "string",
+          "maximumLength": 256
+        },
+        "description": {
+          "description": "A human-readable description of the parameter",
+          "type": "string",
+          "maximumLength": 256
+        },
+        "optional": {
+          "fixedlength": {
+            "description": "describes whether representation is fixed length or variable length",
+            "type": "boolean"
+          },
+          "arraylength": {
+            "description": "length of array if fixed, maximum length of array if variable",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32767
+          }
+        },
+        "representation": {
+          "description": "Data type of the parameter",
+          "type": "string",
+          "enum": [
+            "uint8",
+            "uint16",
+            "uint32",
+            "uint64",
+            "int8",
+            "int16",
+            "int32",
+            "int64",
+            "utf-8 string",
+            "bytearray",
+            "boolean",
+            "json"
+          ]
+        },
+        "minimum": {
+          "description": "Minimum integer value",
+          "type": "integer"
+        },
+        "maximum": {
+          "description": "Maximum integer value",
+          "type": "integer"
+        },
+        "pattern": {
+          "description": "Regular expression pattern which parameter values must match",
+          "type": "string"
+        },
+        "access": {
+          "description": "Permitted access to the parameter",
+          "type": "object",
+          "properties": {
+            "dry": {
+              "type": "object",
+              "properties": {
+                "read": {
+                  "type": "boolean"
+                },
+                "read_option": {
+                  "type": "boolean"
+                },
+                "read_auth": {
+                  "type": "boolean"
+                },
+                "write": {
+                  "type": "boolean"
+                },
+                "write_option": {
+                  "type": "boolean"
+                },
+                "write_auth": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "dependentRequired": {
+                "read_option": [ "read" ],
+                "write_option": [ "write" ],
+                "read_auth": [ "read" ],
+                "write_auth": [ "write" ]
+              }
+            },
+            "wet": {
+              "type": "object",
+              "properties": {
+                "read": {
+                  "type": "boolean"
+                },
+                "read_option": {
+                  "type": "boolean"
+                },
+                "read_auth": {
+                  "type": "boolean"
+                },
+                "write": {
+                  "type": "boolean"
+                },
+                "write_option": {
+                  "type": "boolean"
+                },
+                "write_auth": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "dependentRequired": {
+                "read_option": [ "read" ],
+                "write_option": [ "write" ],
+                "read_auth": [ "read" ],
+                "write_auth": [ "write" ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "valid integers": {
+          "description": "Valid integers",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "valid strings": {
+          "description": "Valid strings",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "optional": {
+          "description": "Technology optional",
+          "type": "object",
+          "properties": {
+            "acoustic": {
+              "type": "boolean"
+            },
+            "optical": {
+              "type": "boolean"
+            },
+            "inductive": {
+              "type": "boolean"
+            },
+            "radio": {
+              "type": "boolean"
+            },
+            "no_power": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
         "required": [ "id", "name", "description", "representation" ]
     },
     "additionalItems":false
