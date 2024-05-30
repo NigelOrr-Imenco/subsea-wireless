@@ -43,12 +43,12 @@
 	  {
 		  "name": "hdc_phy_parameter_2",
 		  "description": "PHY parameter 2 for PHY",
-		  "representation": "uint16",
+		  "representation": "uint16"
 	  },
 	  {
 		  "name": "hdc_phy_parameter_3",
 		  "description": "PHY parameter 3 for PHY",
-		  "representation": "uint16",
+		  "representation": "uint16"
 	  }
   ]
 }
