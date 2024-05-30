@@ -1,5 +1,6 @@
 {
   "all": [
+  [
     {
       "id": 1,
       "name": "manufacturer_name",
@@ -31,28 +32,22 @@
       "representation": "uint8"
     },
     {
-      "id": 3,
-      "name": "device_type",
-      "description": "Device Type",
-      "representation": "uint8"
-    },
-    {
       "id": 4,
-      "name": "comms_classification",
-      "description": "C(omms) classification",
+      "name": "device_type",
+      "description": "Device type. 0 = generic, 1 = acoustic, 2 = optical, 3 = inductive, 4 = radio",
       "representation": "uint8"
     },
     {
-      "id": 131,
-      "name": "power_classification",
-      "description": "P(ower) classification",
+      "id": 11,
+      "name": "device_sub_type",
+      "description": "Device subtype. Inductive: 1 = transmitter, 2 = receiver",
       "representation": "uint8"
     },
     {
-      "id": 132,
-      "name": "distance_classification",
-      "description": "D(istance) classification",
-      "representation": "uint8"
+      "id": 3,
+      "name": "classification",
+      "description": "device classification appropriate to technical standard",
+      "representation": "utf-8 string"
     },
     {
       "id": 133,
@@ -105,56 +100,32 @@
     {
       "id": 10,
       "name": "max_input_power",
-      "description": "Maximum Input Power (W)",
-      "representation": "uint16"
-    },
-    {
-      "id": 11,
-      "name": "min_input_voltage",
-      "description": "Minimum Input Voltage (dV)",
-      "representation": "uint16"
-    },
-    {
-      "id": 12,
-      "name": "max_input_voltage",
-      "description": "Maximum Input Voltage (dV)",
-      "representation": "uint16"
-    },
-    {
-      "id": 136,
-      "name": "max_design_output_power",
-      "description": "Maximum Design Output Power",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint16"
+      "description": "Maximum Input Power (mW)",
+      "representation": "uint32"
     },
     {
       "id": 137,
-      "name": "min_output_voltage",
-      "description": "Minimum Output Voltage",
+      "name": "max_output_current",
+      "description": "Maximum Output Current (mA)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 138,
       "name": "max_output_voltage",
-      "description": "Maximum Output Voltage",
+      "description": "Maximum Output Voltage (mV)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 13,
@@ -166,6 +137,9 @@
       "id": 14,
       "name": "max_tx_buffer_size",
       "description": "Maximum transmit buffer size",
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -176,7 +150,8 @@
         "acoustic": true,
         "optical": true,
         "radio": true,
-        "no_power": true
+        "no_power": true,
+        "inductive": true
       },
       "representation": "uint16"
     },
@@ -194,24 +169,36 @@
           "write": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
       "id": 17,
       "name": "current_data_rate",
       "description": "Current data rate (bits per second)",
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
       "id": 18,
       "name": "available_data_rates",
       "description": "Available data rates",
+      "optional": {
+        "inductive": true
+      },
       "representation": "json"
     },
     {
       "id": 19,
       "name": "max_rx_buffer_size",
       "description": "Maximum receiver buffer size",
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -227,18 +214,24 @@
       "id": 21,
       "name": "status",
       "description": "Status",
-      "representation": "uint16"
+      "representation": "uint64"
     },
     {
       "id": 22,
       "name": "error_code",
       "description": "Error code",
-      "representation": "uint16"
+      "representation": "uint64"
+    },
+    {
+      "id": 12,
+      "name": "alarm_code",
+      "description": "Alarm code - bit mask of alarm conditions",
+      "representation": "uint64"
     },
     {
       "id": 23,
       "name": "uptime",
-      "description": "Uptime (hours)",
+      "description": "Uptime (seconds)",
       "representation": "uint32"
     },
     {
@@ -378,6 +371,9 @@
           "write": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint8"
     },
     {
@@ -393,6 +389,9 @@
           "read": true,
           "write": true
         }
+      },
+      "optional": {
+        "inductive": true
       },
       "representation": "uint8"
     },
@@ -410,6 +409,9 @@
           "write": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -425,6 +427,9 @@
           "read": true,
           "write": true
         }
+      },
+      "optional": {
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -443,7 +448,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint16"
     },
@@ -463,6 +469,9 @@
           "write_auth": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -481,6 +490,9 @@
           "write_auth": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -498,6 +510,9 @@
           "write": true,
           "write_auth": true
         }
+      },
+      "optional": {
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -518,7 +533,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint8"
     },
@@ -539,7 +555,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint16"
     },
@@ -547,6 +564,9 @@
       "id": 43,
       "name": "average_noise_level",
       "description": "Average noise Level",
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint8"
     },
     {
@@ -611,7 +631,7 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
       },
       "representation": "uint32"
     },
@@ -650,7 +670,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -671,7 +692,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -692,7 +714,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true 
       },
       "representation": "uint32"
     },
@@ -711,6 +734,9 @@
           "write": true,
           "write_auth": true
         }
+      },
+      "optional": {
+        "inductive": true 
       },
       "representation": "uint32"
     },
@@ -731,7 +757,8 @@
         }
       },
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -770,6 +797,9 @@
           "read": true,
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint8"
     },
     {
@@ -783,6 +813,9 @@
         "wet": {
           "read": true
         }
+      },
+      "optional": {
+        "inductive": true
       },
       "representation": "uint32"
     },
@@ -798,6 +831,9 @@
           "read": true
         }
       },
+      "optional": {
+        "inductive": true
+      },
       "representation": "uint32"
     },
     {
@@ -805,6 +841,7 @@
       "name": "save_config",
       "description": "Save configuration",
       "optional": {
+        "inductive": true,
         "no_power": true
       },
       "representation": "boolean"
@@ -832,7 +869,8 @@
       "name": "clear_buffer",
       "description": "Clear buffer",
       "optional": {
-        "acoustic": true
+        "acoustic": true,
+        "inductive": true
       },
       "representation": "boolean"
     },
@@ -851,6 +889,7 @@
         }
       },
       "optional": {
+        "inductive": true,
         "acoustic": true
       },
       "representation": "boolean"
@@ -869,6 +908,9 @@
           "write": true,
           "write_option": true
         }
+      },
+      "optional": {
+        "inductive": true
       }
     },
     {
@@ -885,64 +927,41 @@
           "read": true,
           "read_option": true,
         }
+      },
+      "optional": {
+        "inductive": true
       }
     },
     {
       "id": 66,
-      "name": "tx_firmware",
-      "description": "Transmitter firmware image",
+      "name": "firmware",
+      "description": "firmware image",
       "optional": {
         "acoustic": true
       },
       "access": {
         "dry": {
+          "read": false,
           "write": true,
           "write_option": true
-        }
-      },
-      "representation": "json"
-    },
-    {
-      "id": 67,
-      "name": "rx_firmware",
-      "description": "Receiver firmware image",
-      "optional": {
-        "acoustic": true
-      },
-      "access": {
-        "dry": {
+        },
+        "wet": {
+          "read": false,
           "write": true,
-          "write_option": true
-        }
+          "write_option": true,
+          "write_auth": true
+        } 
       },
       "representation": "json"
     },
     {
       "id": 68,
-      "name": "protocol_mode",
-      "description": "Protocol mode",
+      "name": "event_enable",
+      "description": "Event subscription enable",
       "optional": {
         "acoustic": true
       },
-      "representation": "uint8"
-    },
-    {
-      "id": 69,
-      "name": "power_tx_input_power_limit",
-      "description": "Power transmitter input power limit (W)",
-      "optional": {
-        "no_power": true
-      },
-      "representation": "uint16"
-    },
-    {
-      "id": 70,
-      "name": "power_rx_output_power_limit",
-      "description": "Power receiver output power limit (W)",
-      "optional": {
-        "no_power": true
-      },
-      "representation": "uint16"
+      "representation": "boolean"
     },
     {
       "id": 71,
@@ -950,6 +969,7 @@
       "description": "Connection timeout (s)",
       "optional": {
         "acoustic": true,
+        "inductive": true,
         "no_power": true
       },
       "representation": "uint8"
@@ -965,53 +985,9 @@
       "representation": "uint16"
     },
     {
-      "id": 73,
-      "name": "power_tx_power_levels",
-      "description": "Supported transmitter power levels for power transfer",
-      "optional": {
-        "no_power": true
-      },
-      "representation": "json"
-    },
-    {
-      "id": 74,
-      "name": "power_rx_power_levels",
-      "description": "Supported receiver power levels for power transfer",
-      "optional": {
-        "no_power": true
-      },
-      "representation": "json"
-    },
-    {
-      "id": 75,
-      "name": "tx_signal_strength",
-      "description": "Transmitter signal strength",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "inductive": true,
-        "no_power": true
-      },
-      "representation": "uint8"
-    },
-    {
-      "id": 76,
-      "name": "rx_signal_strength",
-      "description": "Receiver signal strength",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "inductive": true,
-        "no_power": true
-      },
-      "representation": "uint8"
-    },
-    {
       "id": 77,
       "name": "power_transfer_state",
-      "description": "State of power transfer",
+      "description": "State of power transfer. 0 = disconnected, 1 = connected on, 2 = connected off, 3 = connected alarm(off)",
       "optional": {
         "acoustic": true,
         "optical": true,
@@ -1028,7 +1004,7 @@
         "acoustic": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "boolean"
     },
     {
       "id": 79,
@@ -1038,68 +1014,56 @@
         "acoustic": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 80,
-      "name": "power_tx_remote_power_output_enabled",
-      "description": "Transmitter remote power output enabled",
+      "name": "power_output_enabled",
+      "description": "Power output enable request",
       "optional": {
-        "no_power": true
-      },
-      "representation": "boolean"
-    },
-    {
-      "id": 81,
-      "name": "power_rx_power_output_enabled",
-      "description": "Receiver power output enabled",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
         "no_power": true
       },
       "representation": "boolean"
     },
     {
       "id": 82,
-      "name": "power_tx_input_current",
-      "description": "Power transmitter input current",
+      "name": "power_input_current",
+      "description": "Power transmitter input current (mA)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 83,
-      "name": "power_rx_output_current",
-      "description": "Power receiver output current",
+      "name": "power_output_current",
+      "description": "Power receiver output current (mA)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 84,
-      "name": "power_tx_input_voltage",
-      "description": "Power transmitter input voltage",
+      "name": "power_input_voltage",
+      "description": "Power transmitter input voltage (mV)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 85,
-      "name": "power_rx_output_voltage",
+      "name": "power_output_voltage",
       "description": "Power receiver output voltage",
       "optional": {
         "acoustic": true,
@@ -1107,60 +1071,36 @@
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
-    },
-    {
-      "id": 86,
-      "name": "power_tx_max_input_current",
-      "description": "Power transmitter maximum input current",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 87,
-      "name": "power_rx_max_output_current",
-      "description": "Power receiver maximum output current",
+      "name": "power_max_output_current",
+      "description": "Power receiver maximum output current (mA)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
-    },
-    {
-      "id": 88,
-      "name": "power_tx_max_input_voltage",
-      "description": "Power transmitter maximum input voltage",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 89,
-      "name": "power_rx_max_output_voltage",
-      "description": "Power receiver maximum output voltage",
+      "name": "power_max_output_voltage",
+      "description": "Power receiver maximum output voltage (mV)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 90,
-      "name": "power_tx_foreign_object_detected",
-      "description": "Power transmitter foreign object detected",
+      "name": "power_foreign_object_detected",
+      "description": "Foreign object detected",
       "optional": {
         "acoustic": true,
         "optical": true,
@@ -1168,42 +1108,6 @@
         "no_power": true
       },
       "representation": "boolean"
-    },
-    {
-      "id": 91,
-      "name": "power_rx_foreign_object_detected",
-      "description": "Power receiver foreign object detected",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "boolean"
-    },
-    {
-      "id": 92,
-      "name": "power_tx_max_temperature",
-      "description": "Power transmitter temperature limit",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint16"
-    },
-    {
-      "id": 93,
-      "name": "power_rx_max_temperature",
-      "description": "Power receiver temperature limit",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint16"
     },
     {
       "id": 94,
@@ -1219,72 +1123,30 @@
       "representation": "boolean"
     },
     {
-      "id": 95,
-      "name": "power_tx_temperature",
-      "description": "Power transmitter temperature",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "int8"
-    },
-    {
-      "id": 96,
-      "name": "power_rx_temperature",
-      "description": "Power receiver temperature",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "int8"
-    },
-    {
       "id": 97,
-      "name": "power_tx_pressure",
-      "description": "Power transmitter pressure",
+      "name": "pressure",
+      "description": "measured pressure (Pa)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
+        "inductive": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "uint32"
     },
     {
       "id": 98,
-      "name": "power_rx_pressure",
-      "description": "Power receiver pressure",
+      "name": "humidity",
+      "description": "measured humidity (%Rh)",
       "optional": {
         "acoustic": true,
         "optical": true,
         "radio": true,
+        "inductive": true,
         "no_power": true
       },
-      "representation": "uint16"
-    },
-    {
-      "id": 99,
-      "name": "read",
-      "description": "Read",
-      "optional": {
-        "acoustic": true,
-        "no_power": true
-      },
-      "representation": "boolean"
-    },
-    {
-      "id": 100,
-      "name": "write",
-      "description": "Write",
-      "optional": {
-        "acoustic": true,
-        "no_power": true
-      },
-      "representation": "boolean"
+      "representation": "uint8"
     },
     {
       "id": 101,
@@ -1294,12 +1156,12 @@
         "acoustic": true,
         "no_power": true
       },
-      "representation": "uint16"
+      "representation": "json"
     },
     {
       "id": 103,
-      "name": "reset",
-      "description": "Reset",
+      "name": "reset_alarms",
+      "description": "Reset of alarm states",
       "optional": {
         "acoustic": true,
         "no_power": true
@@ -1314,21 +1176,10 @@
         "acoustic": true,
         "optical": true,
         "radio": true,
+        "inductive": true,
         "no_power": true
       },
       "representation": "json"
-    },
-    {
-      "id": 105,
-      "name": "power_status",
-      "description": "Power transfer status",
-      "optional": {
-        "acoustic": true,
-        "optical": true,
-        "radio": true,
-        "no_power": true
-      },
-      "representation": "uint8"
     },
     {
       "id": 106,
@@ -1350,9 +1201,10 @@
         "acoustic": true,
         "optical": true,
         "radio": true,
+        "inductive": true, 
         "no_power": true
       },
-      "representation": "uint8"
+      "representation": "boolean"
     },
     {
       "id": 107,
@@ -1362,6 +1214,7 @@
         "acoustic": true,
         "optical": true,
         "radio": true,
+        "inductive": true,
         "no_power": true
       },
       "representation": "uint8"
@@ -1707,6 +1560,81 @@
         }
       },
       "representation": "json"
+    },
+    {
+      "id": 126,
+      "name": "allow_network_reset_if_control_lost",
+      "description": "Allow network reset if control lost",
+      "access": {
+        "dry": {
+          "read": true,
+          "write": true,
+          "write_auth": true
+        },
+        "wet": {
+          "read": true,
+          "write": true,
+          "write_auth": true
+        }
+      },
+      "optional": {
+        "acoustic": true,
+        "optical": true,
+        "radio": true,
+        "inductive": true
+      },
+      "representation": "json"
+    }, 
+    {
+      "id": 73,
+      "name": "system_state",
+      "description": "System state. 0 - Suspended, 1 - Active",
+      "access": {
+        "dry": {
+          "read": true,
+          "write": true,
+        },
+        "wet": {
+          "read": true,
+          "write": true,
+          "write_auth": true
+        }
+      },
+      "representation": "uint8"
+    }, 
+    {
+      "id": 74,
+      "name": "system_state_auto_active",
+      "description": "System state startup auto active. 0 - No, 1 - Yes",
+      "access": {
+        "dry": {
+          "read": true,
+          "write": true
+        },
+        "wet": {
+          "read": true,
+          "write": true,
+          "write_auth": true
+        }
+      },
+      "representation": "boolean"
+    }, 
+    {
+      "id": 75,
+      "name": "system_state_suspended_delay",
+      "description": "System state startup auto active delay (s)",
+      "access": {
+        "dry": {
+          "read": true,
+          "write": true
+        },
+        "wet": {
+          "read": true,
+          "write": true,
+          "write_auth": true
+        }
+      },
+      "representation": "uint16"
     }
   ]
 }
