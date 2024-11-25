@@ -20,7 +20,7 @@ for param in params:
 
 proto_contents += """  }
   identifier id = 1;
-  bool bool = 2;
+  bool boolean = 2;
   int32 integer = 3;
   string string = 32;
 }
