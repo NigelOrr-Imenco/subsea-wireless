@@ -767,7 +767,7 @@
           "read": true
         },
         "wet": {
-          "read": true,
+          "read": true
         }
       },
       "representation": "uint8"
@@ -879,11 +879,11 @@
       "access": {
         "dry": {
           "read": true,
-          "read_option": true,
+          "read_option": true
         },
         "wet": {
           "read": true,
-          "read_option": true,
+          "read_option": true
         }
       }
     },
