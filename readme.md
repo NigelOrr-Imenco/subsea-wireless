@@ -57,6 +57,15 @@ Command line to create `python\parameters_pb2.py` (assuming protoc is extracted 
 ..\protoc-21.6\bin\protoc.exe --python_out=python .\parameters.proto
 ```
 
+## Nanopb
+Nanopb is an implementation of protobuf to generate C code that is suitable for embedded use. 
+To create the C library, do the following:
+
+- `git clone https://github.com/nanopb/nanopb.git)`
+- `python3 nanopb/generator/nanopb_generator.py --output-dir=C parameters.proto`
+This will create the files `parameters.pb.h` and `parameters.pb.c` in the ./C/ directory.
+
+
 ## Resources
 - Use [The JSON Faker](https://json-schema-faker.js.org/) to generate fake JSON for the given schema to check schema constraints- paste the proposed schema in to the left window, and each time you press 'Generate' on the top right a fake file will be produced in the right window which complies with the schema
 - Use [The JSON Validator](https://www.jsonschemavalidator.net/) to validate the standard specification data against the given schema. Note that only the outer array of the specification file is required, remove the preceding `{"all":` and trailing `}` text (some validators need them, some don't accept them... there's probably a reason for that which can be fixed, somehow)
