@@ -3,6 +3,7 @@
 # Set up minimum number of approvers in Settings ... Branches ... Branch Protection Rules
 parameter*.json @njudell # Aker/BP
 parameter*.json @KimTommyUnplg # BlueLogic / Unplugged
+parameter*.json @JanSWiG # Develogic
 parameter*.json @okebkal # Evologics
 parameter*.json @fschill # Hydromea
 parameter*.json @nigelorr-imenco # Imenco
