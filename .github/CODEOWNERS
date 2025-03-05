@@ -1,0 +1,9 @@
+# PR voting access code owners for parameter list and schema
+# Alphabetical ordered by member companies
+# Set up minimum number of approvers in Settings ... Branches ... Branch Protection Rules
+parameter*.json @njudell # Aker/BP
+parameter*.json @KimTommyUnplg # BlueLogic / Unplugged
+parameter*.json @okebkal # Evologics
+parameter*.json @fschill # Hydromea
+parameter*.json @nigelorr-imenco # Imenco
+parameter*.json @paul-randall-sonardyne # Sonardyne
